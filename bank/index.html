@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bank App</title>
+</head>
+<body>
+
+    <form >
+        <h3>NEW CUSTOMER</h3><br>
+        customerId:<input type="text" id="cusid" name="customerId"/><br>
+        Firstname: <input type="text" id="fn" name="firstname"><br>
+        Lastname: <input type="text" id="ln" name="lastname"><br>
+        <input type="button" value="submit" id="submit1">
+
+        <h3>NEW ASSET</h3><br>
+        accountId: <input type="text" id="addaccnt"><br>
+        owner: <input type="text" id="own"><br>
+        balance: <input type="text" id="bal"><br>
+        <input type="button" value="submit" id="submit2">
+        
+        
+        <h3>Submit Transaction</h3><br>
+        
+        <h2>AccountTransfer</h2>
+        From: <input type="number" id="frm"><br>
+        To: <input type="number" id="to"><br>
+        Amount: <input type="text" id="amnt"><br>
+        <input type="button" value="submit" id="submit3">
+
+        <h2>Deposit</h2><br>
+        Id: <input type="number" name="Id" id="id1"><br>
+        Amount: <input type="text" name="amount" id="amt"><br>
+        <input type="button" value="submit" id="submit4">
+
+        <h2>WithDrawl</h2><br>
+        Id: <input type="number" name="Id" id="id2"><br>
+        Amount: <input type="text" name="amount" id="amount"><br>
+        <input type="button" value="submit" id="submit5">
+
+        <h2>Message</h2><br>
+        From: <input type="number" id="from"><br>
+        To: <input type="number" id="to"><br>
+        message: <input type="text" id="msg"><br>
+        <input type="button" value="submit" id="submit6">
+    </form>
+    <script>
+    submit1.addEventListener('click', function() {
+
+var cusid = document.getElementById('cusid').value;
+var fn = document.getElementById('fn').value;
+var ln = document.getElementById('ln').value;
+
+var url = "http://localhost:3000/api/test.Customer";
+var jsonObj = {
+    "$class": "test.Customer",
+    "customerId": cusid,
+    "firstname": fn,
+    "lastname": ln
+}
+
+var Obj = JSON.stringify(jsonObj);
+
+console.log(Obj);
+
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function () { 
+if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+    alert(xmlhttp.responseText);
+    }
+}
+xmlhttp.open("POST", url, true);
+    xmlhttp.setRequestHeader("Content-Type", "application/json");
+xmlhttp.send(Obj);
+});
+
+submit2.addEventListener('click', function() {
+
+var addaccnt = document.getElementById('addaccnt').value;
+var own = document.getElementById('own').value;
+var bal = document.getElementById('bal').value;
+
+var url = "http://localhost:3000/api/test.Account";
+
+var jsonObj = {
+"$class": "test.Account",
+"accountId": addaccnt,
+"owner": "resource:test.Customer#" + own,
+"balance": Number(bal),
+"msg": " ",
+"status": " "
+}
+
+var Obj = JSON.stringify(jsonObj);
+
+console.log(Obj);
+
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function () { 
+if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+alert(xmlhttp.responseText);
+}
+}
+xmlhttp.open("POST", url, true);
+xmlhttp.setRequestHeader("Content-Type", "application/json");
+xmlhttp.send(Obj);
+});
+
+submit3.addEventListener('click', function() {
+var frm = document.getElementById('frm').value;
+var to = document.getElementById('to').value;
+var amnt = document.getElementById('amnt').value;
+
+var url = "http://localhost:3000/api/test.AccountTransfer";
+
+var jsonObj = {
+"$class": "test.AccountTransfer",
+"from": "resource:test.Account#" + frm,
+"to": "resource:test.Account#" + to,
+"amount": Number(amnt)
+}
+
+var Obj = JSON.stringify(jsonObj);
+
+console.log(Obj);
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function() {
+if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+alert(xmlhttp.responseText);
+}
+}
+xmlhttp.open("POST", url, true);
+xmlhttp.setRequestHeader("Content-Type", "application/json");
+xmlhttp.send(Obj);
+});
+
+submit4.addEventListener('click', function() {
+var id1 = document.getElementById('id1').value;
+var amt = document.getElementById('amt').value;
+
+var url = "http://localhost:3000/api/test.Deposit";
+
+var jsonObj = {
+"$class": "test.Deposit",
+"Id": "resource:test.Account#" + id1,
+"amount": Number(amt)
+}
+
+var Obj = JSON.stringify(jsonObj);
+
+console.log(Obj);
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function() {
+if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+alert(xmlhttp.responseText);
+}
+}
+xmlhttp.open("POST", url, true);
+xmlhttp.setRequestHeader("Content-Type", "application/json");
+xmlhttp.send(Obj);
+});
+
+submit5.addEventListener('click', function() {
+var id2 = document.getElementById('id2').value;
+var amount = document.getElementById('amount').value;
+
+var url = "http://localhost:3000/api/test.Deposit";
+
+var jsonObj = {
+"$class": "test.withDraw",
+"Id": "resource:test.Account#" + id2,
+"amount": Number(amount)
+}
+
+var Obj = JSON.stringify(jsonObj);
+
+console.log(Obj);
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function() {
+if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+alert(xmlhttp.responseText);
+}
+}
+xmlhttp.open("POST", url, true);
+xmlhttp.setRequestHeader("Content-Type", "application/json");
+xmlhttp.send(Obj);
+});
+
+submit6.addEventListener('click', function() {
+var from = document.getElementById('from').value;
+var to = document.getElementById('to').value;
+var msg = document.getElementById('msg').value;
+
+var url = "http://localhost:3000/api/test.message";
+var jsonObj = {
+"$class": "test.message",
+"from": "resource:test.Account#" + from,
+"to": "resource:test.Account#" + to,
+"msg": msg
+}
+
+var Obj = JSON.stringify(jsonObj);
+
+console.log(Obj);
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function() {
+if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+alert(xmlhttp.responseText);
+}
+}
+xmlhttp.open("POST", url, true);
+xmlhttp.setRequestHeader("Content-Type", "application/json");
+xmlhttp.send(Obj);
+});
+    
+    </script>
+</body>
+</html>

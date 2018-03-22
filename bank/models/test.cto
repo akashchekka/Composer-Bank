@@ -1,0 +1,41 @@
+/**
+  Account is an asset which is uniquely identified with accountId. Each account is linked with Customer who is the owner of the acccount. Account has a property of balance which indicates how much money the account holds at any moment.
+ */
+
+namespace test
+
+asset Account identified by accountId {
+  o String accountId
+  --> Customer owner
+  o Double balance
+  o String msg
+  o String status
+}
+
+participant Customer identified by customerId {
+  o String customerId
+  o String firstname
+  o String lastname
+}
+
+transaction AccountTransfer {
+  --> Account from
+  --> Account to
+  o Double amount
+}
+
+transaction Deposit {
+  --> Account Id
+  o Double amount
+}
+
+transaction withDraw {
+  -->Account Id
+  o Double amount
+} 
+
+transaction message {
+  -->Account from
+  -->Account to
+  o String msg
+}
